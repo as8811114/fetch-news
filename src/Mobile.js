@@ -9,14 +9,8 @@ import {
   Typography,
 } from "@mui/joy";
 import { Component } from "react";
-
+import noImageAlt from "./mqdefault.jpg";
 export default class Mobile extends Component {
-  constructor() {
-    super();
-  }
-  componentDidMount() {
-    console.log("Mobile Mount");
-  }
   render() {
     return (
       <div>
@@ -60,10 +54,10 @@ export default class Mobile extends Component {
                     }}
                   >
                     <Typography level="body-sm" sx={{ marginRight: "10px" }}>
-                      {`${data.publishedAt.substring(
+                      {`${data.published_at.substring(
                         0,
                         10
-                      )} ${data.publishedAt.substring(11, 19)}`}
+                      )} ${data.published_at.substring(11, 19)}`}
                     </Typography>
 
                     <Chip
@@ -73,14 +67,22 @@ export default class Mobile extends Component {
                       variant="soft"
                       startDecorator={data.icon}
                     >
-                      {this.props.category.toUpperCase()}
+                      {data.category.toUpperCase()}
                     </Chip>
                   </div>
                 </div>
                 <CardContent orientation="vertical">
-                  <AspectRatio minHeight="240px" maxHeight="300px">
-                    <img src={data.urlToImage} />
-                  </AspectRatio>
+                  {data.image && (
+                    <AspectRatio minHeight="240px" maxHeight="300px">
+                      <img src={data.image} alt={"no Image"} />
+                    </AspectRatio>
+                  )}
+                  {!data.image && (
+                    <AspectRatio minHeight="240px" maxHeight="300px">
+                      <img src={noImageAlt} alt={"no Image"} />
+                    </AspectRatio>
+                  )}
+
                   <div style={{ textAlign: "start" }}>
                     {data.description}
                     <Link

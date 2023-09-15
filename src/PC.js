@@ -9,14 +9,8 @@ import {
   Select,
   Typography,
 } from "@mui/joy";
+import noImageAlt from "./mqdefault.jpg";
 export default class PC extends Component {
-  constructor(props) {
-    super(props);
-  }
-  componentDidMount() {
-    console.log("PC Mount");
-    console.log(this.props.data[0]);
-  }
   render() {
     return (
       <div>
@@ -61,10 +55,10 @@ export default class PC extends Component {
                     }}
                   >
                     <Typography level="body-sm" sx={{ marginRight: "10px" }}>
-                      {`${data.publishedAt.substring(
+                      {`${data.published_at.substring(
                         0,
                         10
-                      )} ${data.publishedAt.substring(11, 19)}`}
+                      )} ${data.published_at.substring(11, 19)}`}
                     </Typography>
 
                     <Chip
@@ -74,18 +68,30 @@ export default class PC extends Component {
                       variant="soft"
                       startDecorator={data.icon}
                     >
-                      {this.props.category.toUpperCase()}
+                      {data.category.toUpperCase()}
                     </Chip>
                   </div>
                 </div>
                 <CardContent orientation="horizontal">
-                  <AspectRatio
-                    minHeight="240px"
-                    maxHeight="300px"
-                    sx={{ width: "40%" }}
-                  >
-                    <img src={data.urlToImage} />
-                  </AspectRatio>
+                  {data.image && (
+                    <AspectRatio
+                      minHeight="240px"
+                      maxHeight="300px"
+                      sx={{ width: "40%" }}
+                    >
+                      <img src={data.image} alt={"no Image"} />{" "}
+                    </AspectRatio>
+                  )}
+                  {!data.image && (
+                    <AspectRatio
+                      minHeight="240px"
+                      maxHeight="300px"
+                      sx={{ width: "40%" }}
+                    >
+                      <img src={noImageAlt} alt={"no Image"} />
+                    </AspectRatio>
+                  )}
+
                   <div style={{ maxWidth: "60%", textAlign: "justify" }}>
                     {data.description}
                     <Link

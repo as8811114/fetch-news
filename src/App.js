@@ -1,24 +1,26 @@
 import { Component } from "react";
-import axios from "axios";
+
 import Footer from "./Footer";
 import Mobile from "./Mobile";
 import PC from "./PC";
 import { Icon } from "@iconify/react";
-import data from "./data";
+
 class App extends Component {
   constructor() {
     super();
     this.state = {
       type: "PC",
       data: [],
-      news: data,
+      news: [],
     };
-    this.page = 1;
     this.category = "general";
+    this.page = 1;
   }
   handleSelectCategory = async (value) => {
+    console.log(this.category);
     console.log("select");
     this.category = value;
+    console.log(this.category);
     this.page = 1;
     await this.fetchNewsData();
   };
@@ -66,30 +68,17 @@ class App extends Component {
     });
   };
   fetchNewsData = async () => {
-    // console.log(
-    //   "fetch Data from Url: " +
-    //     "https://newsapi.org/v2/top-headlines?country=us&apiKey=2c290375b25a4567851c4153c45b0b5f&pageSize=100&category=" +
-    //     this.category
-    // );
-    // const url = new URL(
-    //   "https://newsapi.org/v2/top-headlines?country=us&apiKey=2c290375b25a4567851c4153c45b0b5f&pageSize=100&category=" +
-    //     this.category
-    // );
-
-    // await fetch(url)
-    //   .then((response) => {
-    //     return response.json();
-    //   })
-    //   .then((response) => {
-    //     console.log("fetch data successful");
-    //     console.log(response.articles);
-    //     this.setState({ news: [...response.articles] });
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-    this.setState({ news: data });
-    console.log(this.state.news);
+    await fetch("http://127.0.0.1:3030/getData?catagory=" + this.category)
+      .then((response) => {
+        return response.json();
+      })
+      .then((response) => {
+        console.log("successful");
+        this.setState({ news: [...response.data.data] });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     const fixData = this.state.news.map((data, i) => {
       if (this.category === "sports")
